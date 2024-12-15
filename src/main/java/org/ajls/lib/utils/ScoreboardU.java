@@ -84,9 +84,24 @@ public class ScoreboardU {
 
     public static String getPlayerTeamName(Player player) {
 //        return getPlayerTeam(player).getName();
+
+//        Team team = getPlayerTeam(player);
+//        if (team == null) return null;
+//        return team.getName();
+        return getPlayerTeamName(player, true);
+    }
+    public static String getPlayerTeamName(Player player, boolean notNull) {
         Team team = getPlayerTeam(player);
-        if (team == null) return null;
+        if (team == null) {
+            if (notNull) return "";
+            return null;
+        }
         return team.getName();
+//        String TeamName = getPlayerTeamName(player);
+//        if (notNull) {
+//            if (TeamName == null) return "";
+//        }
+//        return TeamName;
     }
 
     public static Team.OptionStatus getPlayerTeamOption(Player player, Team.Option option) {
@@ -102,15 +117,25 @@ public class ScoreboardU {
         return getPlayerTeam(player).allowFriendlyFire();
     }
 
-    public static ChatColor getPlayerTeamColor(Player player){
+    public static ChatColor getPlayerTeamColor(Player player, boolean notNull){
+        if (getPlayerTeam(player) == null) {
+            if (notNull) {
+                return ChatColor.WHITE;
+            }
+            return null;
+        }
         return getPlayerTeam(player).getColor();
     }
 
-    public static boolean isPlayerSameTeam(Player player1, Player player2) {
-        String teamName1 = getPlayerTeam(player1).getName();
-        String teamName2 = getPlayerTeam(player2).getName();
-        return teamName1.equals(teamName2);
+    public static ChatColor getPlayerTeamColor(Player player) {
+        return getPlayerTeamColor(player, true);
     }
+
+//    public static boolean isPlayerSameTeam(Player player1, Player player2) {
+//        String teamName1 = getPlayerTeam(player1).getName();
+//        String teamName2 = getPlayerTeam(player2).getName();
+//        return teamName1.equals(teamName2);
+//    }
 
     public static boolean joinTeam(String teamName, Player player) {
         Team team = getTeam(teamName);
@@ -119,6 +144,19 @@ public class ScoreboardU {
         team.addPlayer(player);
 //        team.addEntry(player.getName());
         return added;
+    }
+
+    public static boolean leaveTeam(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team team = scoreboard.getEntryTeam(player.getName());
+        if (team == null) {
+//            player.sendMessage("You are not in any team!");
+            return false;
+        }
+
+        // Remove player from the team
+        team.removeEntry(player.getName());
+        return true;
     }
 
 }
