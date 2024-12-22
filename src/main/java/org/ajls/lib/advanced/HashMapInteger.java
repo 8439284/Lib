@@ -94,8 +94,12 @@ public class HashMapInteger<K> extends HashMap<K, Integer> {
         Integer value = get(key);
         if (value >= upperBound) {
             put(key, lowerBound);
-            return lowerBound;
+            return upperBound;
         }
         return increment(key);
+    }
+
+    public int getUpperBound() {
+        return upperBound;
     }
 }
