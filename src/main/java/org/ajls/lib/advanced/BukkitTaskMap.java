@@ -4,20 +4,20 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
-public class BukkitTaskMap<K> {
-    HashMap<K, BukkitTask> tasks;
-    public BukkitTaskMap() {
-        tasks = new HashMap<>();
-    }
+public class BukkitTaskMap<K> extends HashMap<K, BukkitTask> {
+//    HashMap<K, BukkitTask> tasks;
+//    public BukkitTaskMap() {
+//        tasks = new HashMap<>();
+//    }
 
     public BukkitTask put(K key, BukkitTask task, boolean override) {
-        if (tasks.containsKey(key)) {
-            BukkitTask removedTask = tasks.get(key);
+        if (containsKey(key)) {
+            BukkitTask removedTask = super.get(key);
             if (override) {
                 if (removedTask != null) {
                     removedTask.cancel();
                 }
-                tasks.put(key, task);
+                super.put(key, task);
             }
             else {
                 if (task != null) {
@@ -27,25 +27,32 @@ public class BukkitTaskMap<K> {
             return removedTask;
         }
         else {
-            tasks.put(key, task);
+            super.put(key, task);
             return null;
         }
     }
 
+    @Override
     public BukkitTask put(K key, BukkitTask task) {
         return put(key, task, true);
     }
 
-    public BukkitTask remove(K key) {
-        BukkitTask removedTask = tasks.remove(key);
+    @Override
+    public BukkitTask remove(Object key) {
+        BukkitTask removedTask = super.remove(key);
         if (removedTask != null) {
             removedTask.cancel();
         }
         return removedTask;
     }
 
-    public boolean contains(K key) {
-        return tasks.containsKey(key);
+    public boolean contains(Object key) {  //deprecated
+        return super.containsKey(key);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return super.containsKey(key);
     }
 
 }
