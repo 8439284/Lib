@@ -1,5 +1,7 @@
 package org.ajls.lib.advanced;
 
+import org.ajls.lib.references.Time;
+
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -50,11 +52,28 @@ public class HashMapInteger<K> extends HashMap<K, Integer> {
     @Override
     public Integer put(K key, Integer value) {
         if (Objects.equals(value, defaultValue)) {
+            if (!super.containsKey(key)) { //avoid put return null
+                return defaultValue;
+            }
             return super.remove(key);
         }
         else {
+            if (!super.containsKey(key)) { //avoid put return null
+                super.put(key, value);
+                return defaultValue;
+            }
             return super.put(key, value);
         }
+    }
+
+    public boolean putMax(K key, Integer value) {
+        if (get(key) >= value) return false;
+        put(key, value);
+        return true;
+    }
+
+    public boolean putMaxTime(K key, int duration) {
+        return putMax(key, Time.getTime() + duration);
     }
 
     @Override
@@ -101,5 +120,13 @@ public class HashMapInteger<K> extends HashMap<K, Integer> {
 
     public int getUpperBound() {
         return upperBound;
+    }
+
+    public boolean biggerThanTime(K key) {
+        return get(key) > Time.getTime();
+    }
+
+    public boolean biggerOrEqualToTime(K key) {
+        return get(key) >= Time.getTime();
     }
 }

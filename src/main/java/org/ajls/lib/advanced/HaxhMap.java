@@ -20,8 +20,27 @@ public class HaxhMap<K, V> {
         return contains;
     }
 
+    public boolean contains(K key, V value) {
+        if (hashMap.containsKey(key)) {
+            return hashMap.get(key).contains(value);
+        }
+        return false;
+    }
+
+    public HashSet<V> getValues(K key, boolean notNull) {
+//        HashSet<V> values;
+//        if (notNull) {
+//            values = new HashSet<>();
+//        }
+        HashSet<V> values = hashMap.get(key);
+        if (notNull && values == null) {
+            values = new HashSet<>();
+        }
+        return values;
+    }
+
     public HashSet<V> getValues(K key) {
-        return hashMap.get(key);
+        return getValues(key, false);
     }
 
     public HashSet<K> getKeys(V value) {

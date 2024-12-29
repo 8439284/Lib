@@ -1,0 +1,11 @@
+name: Lib
+version: '1.0-SNAPSHOT'
+main: org.ajls.lib.Lib
+api-version: '1.21'
+commands:
+  D:
+    description: Reload Lib
+    usage: /<command>
+  rl:
+    description: Reload server
+    usage: /<command>

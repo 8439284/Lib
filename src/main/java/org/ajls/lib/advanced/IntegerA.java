@@ -49,5 +49,7 @@ public class IntegerA {
         return true;
     }
 
-
+    public int getInt() {
+        return anInt;
+    }
 }

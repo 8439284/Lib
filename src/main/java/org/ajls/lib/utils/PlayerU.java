@@ -69,6 +69,33 @@ public class PlayerU {
         }
     }
 
+    public static double predictAddHealth(LivingEntity entity, double health) {
+        double absorptionPlayer = entity.getAbsorptionAmount();
+        double healthPlayer = entity.getHealth();
+        if (health < 0 ) {  //damage
+            if (absorptionPlayer >= -health) { // absorption able to absorb damage
+                absorptionPlayer += health;
+                health = 0;
+            }
+            else {  // absorption not able to absorb damage
+                health += absorptionPlayer; // damage remove absorption amount
+                absorptionPlayer = 0;
+            }
+        }
+        entity.setAbsorptionAmount(absorptionPlayer);
+        healthPlayer += health;  // damage to player's health
+
+        if (0 < healthPlayer && healthPlayer < entity.getMaxHealth()) {
+            return healthPlayer;
+        }
+        else if (healthPlayer <= 0) {
+            return 0;
+        }
+        else {
+            return entity.getMaxHealth();
+        }
+    }
+
     public static boolean isPlayerSameTeam(Player player1, Player player2) {
         String teamName1 = ScoreboardU.getPlayerTeamName(player1, false);
         String teamName2 = ScoreboardU.getPlayerTeamName(player2, false);
